@@ -1,3 +1,9 @@
+mod json;
+
 fn main() {
-    println!("Hello, world!");
+    let employees = json!([
+        { "name": "Susan", "age": 30 },
+        { "name": "Karl", "age": 40 },
+    ]);
+    dbg!(employees);
 }
