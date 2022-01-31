@@ -31,15 +31,13 @@ impl_from!(i32, Json::Number);
 macro_rules! json {
     ([ $($value:tt),* $(,)? ]) => {{
         crate::json::Json::Array(vec![
-            $(json!($value)),*
+            $( json!($value) ),*
         ])
     }};
     ({ $($key:tt : $value:tt),* } $(,)?) => {{
-        let mut values = std::collections::HashMap::new();
-        $(
-        values.insert($key.into(), json!($value));
-        )*
-        crate::json::Json::Object(values)
+        crate::json::Json::Object(std::collections::HashMap::from_iter([
+            $( ($key.into(), json!($value)) ),*
+        ]))
     }};
     (null) => {
         crate::json::Json::Null
