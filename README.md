@@ -2,4 +2,4 @@
 
 An example implementation of an `json!` macro in Rust.
 
-The implementation can be found in the (json module)(./src/json.rs).
+The implementation can be found in the [json module](./src/json.rs).
