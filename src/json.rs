@@ -48,48 +48,44 @@ macro_rules! json {
 }
 
 #[test]
-fn test_values() {
+fn should_work_with_primitives() {
     assert_eq!(json!(null), Json::Null);
     assert_eq!(json!(true), Json::Boolean(true));
     assert_eq!(json!(123.0), Json::Number(123.0));
     assert_eq!(json!(123), Json::Number(123.0));
-    assert_eq!(json!("Hello"), Json::String("Hello".to_string()));
+    assert_eq!(json!("Hello"), Json::String("Hello".into()));
 }
 
 #[test]
-fn test_object() {
-    let mut values = HashMap::new();
-    values.insert("a".into(), Json::String("Hello".into()));
-    values.insert("b".into(), Json::Number(123.0));
-    let my_object = Json::Object(values);
-    assert_eq!(json!({ "a": "Hello", "b": 123 }), my_object);
-}
-
-#[test]
-fn test_array() {
+fn should_work_with_arrays_of_primitives() {
     assert_eq!(
-        json!([1, 2, "3"]),
+        json!([1, 2, "Hello"]),
         Json::Array(vec![
             Json::Number(1.0),
             Json::Number(2.0),
-            Json::String("3".into())
+            Json::String("Hello".to_string()),
         ])
     );
 }
 
 #[test]
-fn test_object_array() {
+fn should_work_with_objects() {
     assert_eq!(
-        json!([{ "name": "Susan" }, { "name": "Karl" }]),
+        json!({ "a": "Hello", "b": 123 }),
+        Json::Object(HashMap::from_iter([
+            ("a".into(), Json::String("Hello".into())),
+            ("b".into(), Json::Number(123.0))
+        ]))
+    );
+}
+
+#[test]
+fn should_work_with_arrays_of_objects() {
+    assert_eq!(
+        json!([{"a": 1}, {"b": 2}]),
         Json::Array(vec![
-            Json::Object(HashMap::from_iter([(
-                "name".into(),
-                Json::String("Susan".into())
-            ),])),
-            Json::Object(HashMap::from_iter([(
-                "name".into(),
-                Json::String("Karl".into())
-            ),])),
+            Json::Object(HashMap::from_iter([("a".into(), Json::Number(1.0))])),
+            Json::Object(HashMap::from_iter([("b".into(), Json::Number(2.0))])),
         ])
     );
 }
